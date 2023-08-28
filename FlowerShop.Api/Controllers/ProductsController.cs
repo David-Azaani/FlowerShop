@@ -10,28 +10,26 @@ namespace FlowerShop.Api.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly ILogger<ProductsController> _logger;
-
-
-    private readonly DataContext dataContext;
+    private readonly DataContext _dataContext;
 
     public ProductsController(ILogger<ProductsController> logger, DataContext dataContext)
     {
-        this.dataContext = dataContext;
-
-
+        _dataContext = dataContext;
         _logger = logger;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Product>>> GetProduct()
+    public async Task<ActionResult<List<Product>>> GetProducts()
     {
-        var res = await dataContext.Products.ToListAsync();
+        _logger.LogInformation("GetProducts was Invoked!");
+        var res = await _dataContext.Products.ToListAsync();
         return Ok(res);
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> Get(int id)
     {
-        var res = await dataContext.Products.SingleOrDefaultAsync(a => a.Id == id);
+        _logger.LogInformation($"GetProduct with with id {id}  was Invoked!");
+        var res = await _dataContext.Products.SingleOrDefaultAsync(a => a.Id == id);
         if (res == null)
         {
             return NotFound();
