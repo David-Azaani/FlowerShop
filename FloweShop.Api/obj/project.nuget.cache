@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XmhSNhtQlyWsJ1doCC0YdPuFFk++Pbj6wCn0ITaDdlGjDwKeesD3RglRXxb3ViE9n8xys6B7bX0ltZxYgzKVvw==",
+  "dgSpecHash": "vqh6gvSPxsTvZ+urfuuxu40Hu3GxeW0oDQIhlW24GekCCxnHia8GlWddwWON/EmSbQuYh/HRklFRJn/ukA28Ww==",
   "success": true,
   "projectFilePath": "D:\\Projects\\FlowerShop\\FlowerShop\\FloweShop.Api\\FloweShop.Api.csproj",
   "expectedPackageFiles": [
@@ -11,8 +11,8 @@
     "C:\\Users\\D\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "C:\\Users\\D\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
     "C:\\Users\\D\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512",
-    "C:\\Users\\D\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.8\\microsoft.windowsdesktop.app.ref.7.0.8.nupkg.sha512",
     "C:\\Users\\D\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.8\\microsoft.netcore.app.ref.7.0.8.nupkg.sha512",
+    "C:\\Users\\D\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.8\\microsoft.windowsdesktop.app.ref.7.0.8.nupkg.sha512",
     "C:\\Users\\D\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.8\\microsoft.aspnetcore.app.ref.7.0.8.nupkg.sha512",
     "C:\\Users\\D\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.8\\microsoft.netcore.app.host.win-x64.7.0.8.nupkg.sha512"
   ],
