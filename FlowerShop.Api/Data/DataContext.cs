@@ -1,6 +1,6 @@
 using FlowerShop.Api.Entities;
 using Microsoft.EntityFrameworkCore;
-namespace FlowerShop.Api.Controllers;
+namespace FlowerShop.Api.Data;
 
 public class DataContext : DbContext
 {
