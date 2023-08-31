@@ -478,3 +478,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+FlowerShop.Api/flower.db-shm
+FlowerShop.Api/flower.db-wal
