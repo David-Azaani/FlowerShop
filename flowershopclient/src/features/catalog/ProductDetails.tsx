@@ -1,5 +1,6 @@
-import React from "react";
+import { Typography } from "@mui/material";
+
 
 export default function ProductDetails() {
-  return <div>ProductDetails</div>;
+  return (<Typography variant="h1">ProductDetails</Typography>);
 }
