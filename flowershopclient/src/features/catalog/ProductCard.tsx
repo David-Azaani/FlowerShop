@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Product } from "../../app/models/Product";
+import { Link } from "react-router-dom";
 
 interface Props {
   product: Product;
@@ -18,16 +19,21 @@ export default function ProductCard({ product }: Props) {
     <Card>
       <CardHeader
         avatar={
-          <Avatar sx={{bgcolor :'secondary.main'}}>
+          <Avatar sx={{ bgcolor: "secondary.main" }}>
             {product.name.charAt(0).toUpperCase()}
-          </Avatar>}
+          </Avatar>
+        }
         title={product.name}
         titleTypographyProps={{
           sx: { fontWeight: "bold", color: "secondary.main" },
         }}
       />
       <CardMedia
-        sx={{ height: 140, backgroundSize: "contain" , bgcolor:'primary.light' }}
+        sx={{
+          height: 140,
+          backgroundSize: "contain",
+          bgcolor: "primary.light",
+        }}
         image={product.pictureUrl}
         title={product.name}
       />
@@ -41,7 +47,9 @@ export default function ProductCard({ product }: Props) {
       </CardContent>
       <CardActions>
         <Button size="small">Add To Card</Button>
-        <Button size="small">View</Button>
+        <Button size="small" component={Link} to={`/catalog/${product.id}`}>
+          View
+        </Button>
       </CardActions>
     </Card>
     // <ListItem key={product.id}>
