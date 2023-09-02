@@ -1,6 +1,5 @@
-using FlowerShop.Api.Controllers;
 using FlowerShop.Api.Data;
-using Microsoft.AspNetCore.OutputCaching;
+using FlowerShop.Api.Middleware;
 using Microsoft.EntityFrameworkCore;
 // Ordering is not important here!
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +20,9 @@ builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// this must be first!
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
