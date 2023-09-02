@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlowerShop.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ProductsController : ControllerBase
+// [ApiController]
+// [Route("api/[controller]")]
+public class ProductsController : BaseApiController
 {
-    private readonly ILogger<ProductsController> _logger;
+    
     private readonly DataContext _dataContext;
 
-    public ProductsController(ILogger<ProductsController> logger, DataContext dataContext)
+    public ProductsController(ILogger<ProductsController> logger, DataContext dataContext) : base(logger)
     {
         _dataContext = dataContext;
-        _logger = logger;
+
     }
 
     [HttpGet]
