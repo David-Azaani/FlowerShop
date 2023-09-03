@@ -21,11 +21,11 @@ const requests = {
 };
 
 const TestErrors = {
-  get400Erro: () => requests.get("Buggy/bad-request"),
-  get401Error: () => requests.get("Buggy/un-authorized"),
-  getValidationError: () => requests.get("Buggy/validation-error"),
-  get500Error: () => requests.get("Buggy/server-error"),
-  get404Error: () => requests.get("Buggy/not-found"),
+  get400Error: () => requests.get("buggy/bad-request"),
+  get401Error: () => requests.get("buggy/un-authorized"),
+  getValidationError: () => requests.get("buggy/validation-error"),
+  get500Error: () => requests.get("buggy/server-error"),
+  get404Error: () => requests.get("buggy/not-found"),
 };
 
 const Catalog = {
