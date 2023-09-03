@@ -20,6 +20,14 @@ const requests = {
   delete: (url: string) => axios.delete(url).then(resposeBody),
 };
 
+const TestErrors = {
+  get400Erro: () => requests.get("Buggy/bad-request"),
+  get401Error: () => requests.get("Buggy/un-authorized"),
+  getValidationError: () => requests.get("Buggy/validation-error"),
+  get500Error: () => requests.get("Buggy/server-error"),
+  get404Error: () => requests.get("Buggy/not-found"),
+};
+
 const Catalog = {
   list: () => requests.get("products"),
   details: (id: number) => requests.get(`products/${id}`),
@@ -27,6 +35,7 @@ const Catalog = {
 
 const agent = {
   Catalog,
+  TestErrors,
 };
 
 export default agent;
