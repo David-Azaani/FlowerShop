@@ -21,8 +21,8 @@ export default function ProductDetails() {
   useEffect(() => {
     id && // if id is existed
       agent.Catalog.details(parseInt(id))
-        .then((res) => setProducts(res))
-        .catch((error) => console.log(error))
+        .then((res) => setProducts(res)) // if the operation has got a successful result
+        .catch((error) => console.log(error))  // => error.response => error > bucause of our axios interceptor setting otherwise : error.response
         .finally(() => setLoading(false));
   }, [id]);
   //#region old

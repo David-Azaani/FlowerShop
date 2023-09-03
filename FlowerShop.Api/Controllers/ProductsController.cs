@@ -9,7 +9,7 @@ namespace FlowerShop.Api.Controllers;
 // [Route("api/[controller]")]
 public class ProductsController : BaseApiController
 {
-    
+
     private readonly DataContext _dataContext;
 
     public ProductsController(ILogger<ProductsController> logger, DataContext dataContext) : base(logger)
@@ -29,15 +29,13 @@ public class ProductsController : BaseApiController
     public async Task<ActionResult<Product>> Get(int id)
     {
         _logger.LogInformation($"GetProduct with with id {id}  was Invoked!");
-        var res = await _dataContext.Products.SingleOrDefaultAsync(a => a.Id == id);
-        if (res == null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            return Ok(res);
-        }
+        var res = await _dataContext.Products.FindAsync(id);
+        if (res == null) return NotFound();
+
+
+
+        return Ok(res);
+
 
     }
 
