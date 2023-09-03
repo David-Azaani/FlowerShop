@@ -15,7 +15,7 @@ namespace FlowerShop.Api.Controllers
         [HttpGet("not-found")]
         public ActionResult GetNotFound() => NotFound();
         [HttpGet("bad-request")]
-        public ActionResult GetBadRequest() => BadRequest(new ProblemDetails { Detail = "This is a Bad Reques" });
+        public ActionResult GetBadRequest() => BadRequest(new ProblemDetails { Detail = "This is a Bad Reques", Title = "Bad-Request" });
         [HttpGet("un-authorized")]
         public ActionResult GetUnauthorized() => Unauthorized();
         [HttpGet("validation-error")]
