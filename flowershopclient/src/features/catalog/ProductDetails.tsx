@@ -12,6 +12,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../app/models/Product";
+import agent from "../../app/api/agent";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -19,12 +20,21 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/Products/${id}`)
-      .then((res) => setProducts(res.data))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+    id && // if id is existed
+      agent.Catalog.details(parseInt(id))
+        .then((res) => setProducts(res))
+        .catch((error) => console.log(error))
+        .finally(() => setLoading(false));
   }, [id]);
+  //#region old
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:5000/api/Products/${id}`)
+  //     .then((res) => setProducts(res.data))
+  //     .catch((error) => console.log(error))
+  //     .finally(() => setLoading(false));
+  // }, [id]);
+  //#endregion
 
   if (loading) return <h3>Loading ... </h3>;
   if (!product) return <h3>Not Found ... </h3>;
@@ -39,9 +49,7 @@ export default function ProductDetails() {
         />
       </Grid>
       <Grid item xs={6}>
-        <Typography variant="h3" >
-          {product.name}
-        </Typography>
+        <Typography variant="h3">{product.name}</Typography>
         <Divider sx={{ mb: 2 }} />
         <Typography variant="h4" color="secondary">
           ${(product.price / 100).toFixed(2)}
