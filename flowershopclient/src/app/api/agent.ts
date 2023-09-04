@@ -2,6 +2,9 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 
+// Making intetional Delay to test serverDelay
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
+
 axios.defaults.baseURL = "http://localhost:5000/api/";
 
 // Array Function
@@ -16,7 +19,9 @@ const resposeBody = (response: AxiosResponse) => response.data;
 //#endregion
 
 axios.interceptors.response.use(
-  (response) => {
+  async (response) => {
+    await sleep();
+
     return response;
   },
   (error: AxiosError) => {
@@ -32,8 +37,8 @@ axios.interceptors.response.use(
         // toast.error(data.title);
         break;
       case 404:
-        toast.error(data.title);
-
+        // toast.error(data.title);
+        router.navigate("/not-found"); // Or on productDetails use this instead of not-found typography
         break;
       case 400:
         if (data.errors) {

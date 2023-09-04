@@ -1,4 +1,5 @@
 import agent from "../../app/api/agent";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Product } from "../../app/models/Product";
 import ProductList from "./ProductList";
 import { useState, useEffect } from "react";
@@ -10,11 +11,16 @@ import { useState, useEffect } from "react";
 
 export default function Catalog() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    agent.Catalog.list().then((products) => setProducts(products));
+    agent.Catalog.list()
+      .then((products) => setProducts(products))
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }, []);
-
+  if (loading)
+    return <LoadingComponent loadingMessage="Loading Products ... Wait!" />;
   //#region old
   // useEffect(() => {
   //   fetch("http://localhost:5000/api/Products")

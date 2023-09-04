@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../app/models/Product";
 import agent from "../../app/api/agent";
+import NotFound from "../../app/errors/NotFound";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +24,7 @@ export default function ProductDetails() {
     id && // if id is existed
       agent.Catalog.details(parseInt(id))
         .then((res) => setProducts(res)) // if the operation has got a successful result
-        .catch((error) => console.log(error))  // => error.response => error > bucause of our axios interceptor setting otherwise : error.response
+        .catch((error) => console.log(error)) // => error.response => error > bucause of our axios interceptor setting otherwise : error.response
         .finally(() => setLoading(false));
   }, [id]);
   //#region old
@@ -35,8 +37,11 @@ export default function ProductDetails() {
   // }, [id]);
   //#endregion
 
-  if (loading) return <h3>Loading ... </h3>;
-  if (!product) return <h3>Not Found ... </h3>;
+  // if (loading) return <h3>Loading ... </h3>;
+  if (loading)
+    return <LoadingComponent loadingMessage="Loading Details ... Wait!" />;
+  // if (!product) return <h3>Not Found ... </h3>;
+  if (!product) return <NotFound />;
 
   return (
     <Grid container spacing={6}>
