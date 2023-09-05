@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Api.Controllers
-{
+namespace FlowerShop.Api.Controllers;
+
     [ApiController]
     [Route("api/[controller]")]
     public class BaseApiController : ControllerBase
@@ -15,4 +15,3 @@ namespace FlowerShop.Api.Controllers
 
         
     }
-}

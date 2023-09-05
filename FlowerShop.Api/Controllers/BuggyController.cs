@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowerShop.Api.Controllers
-{
+namespace FlowerShop.Api.Controllers;
+
     public class BuggyController : BaseApiController
     {
         public BuggyController(ILogger<BaseApiController> logger) : base(logger)
@@ -35,4 +31,3 @@ namespace FlowerShop.Api.Controllers
         }
 
     }
-}

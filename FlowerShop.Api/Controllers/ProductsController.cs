@@ -31,11 +31,7 @@ public class ProductsController : BaseApiController
         _logger.LogInformation($"GetProduct with with id {id}  was Invoked!");
         var res = await _dataContext.Products.FindAsync(id);
         if (res == null) return NotFound();
-
-
-
         return Ok(res);
-
 
     }
 
