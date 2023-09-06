@@ -6,6 +6,7 @@ import { router } from "../router/Routes";
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.withCredentials = true; // for useing cookie on client side!
 
 // Array Function
 const resposeBody = (response: AxiosResponse) => response.data;
@@ -75,6 +76,14 @@ const TestErrors = {
   get404Error: () => requests.get("buggy/not-found"),
 };
 
+const Basket = {
+  get: () => requests.get("basket"),
+  addItem: (productId: number, quantity: number = 1) =>
+    requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}), // {} because we are sending our param with querystring not body so we would pass empty body
+  deleteItem: (productId: number, quantity: number = 1) =>
+    requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
+};
+
 const Catalog = {
   list: () => requests.get("products"),
   details: (id: number) => requests.get(`products/${id}`),
@@ -83,6 +92,7 @@ const Catalog = {
 const agent = {
   Catalog,
   TestErrors,
+  Basket,
 };
 
 export default agent;
