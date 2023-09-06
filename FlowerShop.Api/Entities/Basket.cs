@@ -1,3 +1,4 @@
+
 namespace FlowerShop.Api.Entities;
 
 public class Basket
@@ -14,7 +15,7 @@ public class Basket
         {
             items.Add(new BasketItem { Product = product, Quantity = quantity });
         }
-        var existedItem = items.FirstOrDefault(item => item.Id == product.Id);
+        var existedItem = items.FirstOrDefault(item => item.ProductId == product.Id);
         if (existedItem != null) existedItem.Quantity += quantity;
 
     }
@@ -22,11 +23,12 @@ public class Basket
     public void RemoveItem(int productId, int quantity)
     {
 
-        var Item = items.FirstOrDefault(item => item.Id == productId);
+        var Item = items.FirstOrDefault(item => item.ProductId == productId);
         if (Item == null) return;
         Item.Quantity -= quantity;
         if (Item.Quantity == 0) items.Remove(Item);
 
     }
+
 
 }
