@@ -32,8 +32,10 @@ if (app.Environment.IsDevelopment())
 // app.UseHttpsRedirection();
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader()
-    .AllowAnyMethod().WithOrigins("http://localhost:3000");
+    opt.AllowAnyHeader() // Use Headers
+    .AllowAnyMethod()    // Use any methods
+    .AllowCredentials() // use Cookie in out
+    .WithOrigins("http://localhost:3000"); // this specific url
 });
 app.UseAuthorization();
 
