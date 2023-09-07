@@ -4,6 +4,7 @@
 // import LoadingComponent from "../../app/layout/LoadingComponent";
 import {
   Box,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -18,6 +19,7 @@ import { useStoreContext } from "../../app/context/StoreContext";
 import { useState } from "react";
 import agent from "../../app/api/agent";
 import { LoadingButton } from "@mui/lab";
+import BasketSummary from "./BasketSummary";
 
 export default function BasketPage() {
   const { basket, removeItem, setBasket } = useStoreContext();
@@ -151,6 +153,12 @@ export default function BasketPage() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Grid container>
+        <Grid item xs={6} />
+        <Grid item xs={6}>
+          <BasketSummary />
+        </Grid>
+      </Grid>
     </div>
   );
 }
