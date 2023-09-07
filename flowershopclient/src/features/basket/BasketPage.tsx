@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Basket } from "../../app/models/basket";
-import agent from "../../app/api/agent";
-import LoadingComponent from "../../app/layout/LoadingComponent";
+// import React, { useEffect, useState } from "react";
+// import { Basket } from "../../app/models/basket";
+// import agent from "../../app/api/agent";
+// import LoadingComponent from "../../app/layout/LoadingComponent";
 import {
   IconButton,
   Paper,
@@ -14,23 +14,28 @@ import {
   Typography,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { useStoreContext } from "../../app/context/StoreContext";
 
 export default function BasketPage() {
-  const [loading, setLoading] = useState(true);
-  const [basket, setBasket] = useState<Basket | null>(null);
+  const { basket } = useStoreContext();
 
-  useEffect(() => {
-    agent.Basket.get()
-      .then((basket) => setBasket(basket))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
-  }, []);
-  // [] means useeffect would runs once! not more!
-  //  [id] means useeffect would runs once! or when is changed!
-  // after each component page  we have to add it to route component
+  //#region  // these code were commented after useing store provide because we loaded the basket at initilizztion app and we dont need this anymore!
+  // const [loading, setLoading] = useState(true);
+  // const [basket, setBasket] = useState<Basket | null>(null);
 
-  if (loading)
-    return <LoadingComponent loadingMessage="Loading basket ! wait ..." />;
+  // useEffect(() => {
+  //   agent.Basket.get()
+  //     .then((basket) => setBasket(basket))
+  //     .catch((error) => console.log(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
+  // // [] means useeffect would runs once! not more!
+  // //  [id] means useeffect would runs once! or when is changed!
+  // // after each component page  we have to add it to route component
+
+  // if (loading)
+  //   return <LoadingComponent loadingMessage="Loading basket ! wait ..." />;
+  //#endregion
 
   if (!basket)
     return <Typography variant="h3">Your Basket is Empty!</Typography>;
@@ -62,7 +67,7 @@ export default function BasketPage() {
                 </TableCell>
                 <TableCell align="right">{item.quantity}</TableCell>
                 <TableCell align="right">
-                  $ {((item.price / 100 )* item.quantity).toFixed(2)}
+                  $ {((item.price / 100) * item.quantity).toFixed(2)}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton color="error">

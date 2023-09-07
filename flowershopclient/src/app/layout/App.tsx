@@ -9,13 +9,13 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useStoreConetxt } from "../context/StoreContext";
+import { useStoreContext } from "../context/StoreContext";
 import { getCookie } from "../util/util";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 
 function App() {
-  const { setBasket } = useStoreConetxt();
+  const { setBasket } = useStoreContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +25,8 @@ function App() {
         .then((basket) => setBasket(basket))
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [setBasket]);
 

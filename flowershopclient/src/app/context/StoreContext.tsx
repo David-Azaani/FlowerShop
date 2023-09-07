@@ -14,7 +14,7 @@ export const StoreContext = createContext<StoreContextValue | undefined>(
   undefined
 );
 
-export function useStoreConetxt() {
+export function useStoreContext() {
   const context = useContext(StoreContext);
   if (context === undefined) {
     throw Error("Oops -  we dont seem to be insde the provider");
