@@ -4,7 +4,6 @@
 // import LoadingComponent from "../../app/layout/LoadingComponent";
 import {
   Box,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -18,26 +17,32 @@ import { Add, Delete, Remove } from "@mui/icons-material";
 import { useStoreContext } from "../../app/context/StoreContext";
 import { useState } from "react";
 import agent from "../../app/api/agent";
-import { error } from "console";
 import { LoadingButton } from "@mui/lab";
 
 export default function BasketPage() {
   const { basket, removeItem, setBasket } = useStoreContext();
-  const [loading, setLoading] = useState(false);
+  const [status, setStaus] = useState({
+    loading: false,
+    name: "",
+  });
 
-  function handleAddItem(productId: number) {
-    setLoading(true);
+  function handleAddItem(productId: number, name: string) {
+    setStaus({ loading: true, name }); // as name of the thing is the name of the property
     agent.Basket.addItem(productId)
       .then((basket) => setBasket(basket))
       .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+      .finally(() => setStaus({ loading: false, name: "" }));
   }
-  function handleRemoveItem(productId: number, quantity: number = 1) {
-    setLoading(true);
+  function handleRemoveItem(
+    productId: number,
+    quantity: number = 1,
+    name: string
+  ) {
+    setStaus({ loading: true, name });
     agent.Basket.deleteItem(productId, quantity)
       .then(() => removeItem(productId, quantity))
       .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+      .finally(() => setStaus({ loading: false, name: "" }));
   }
   //#region  // these code were commented after useing store provide because we loaded the basket at initilizztion app and we dont need this anymore!
   // const [loading, setLoading] = useState(true);
@@ -94,17 +99,29 @@ export default function BasketPage() {
                 </TableCell>
                 <TableCell align="center">
                   <LoadingButton
-                    loading={loading}
+                    loading={
+                      status.loading && status.name == "rem" + item.productId
+                    }
                     color="error"
-                    onClick={() => handleRemoveItem(item.productId)}
+                    onClick={() =>
+                      handleRemoveItem(
+                        item.productId,
+                        1,
+                        "rem" + item.productId
+                      )
+                    }
                   >
                     <Remove />
                   </LoadingButton>
                   {item.quantity}
                   <LoadingButton
-                    loading={loading}
+                    loading={
+                      status.loading && status.name == "add" + item.productId
+                    }
                     color="secondary"
-                    onClick={() => handleAddItem(item.productId)}
+                    onClick={() =>
+                      handleAddItem(item.productId, "add" + item.productId)
+                    }
                   >
                     <Add />
                   </LoadingButton>
@@ -114,10 +131,16 @@ export default function BasketPage() {
                 </TableCell>
                 <TableCell align="right">
                   <LoadingButton
-                    loading={loading}
+                    loading={
+                      status.loading && status.name == "del" + item.productId
+                    }
                     color="error"
                     onClick={() =>
-                      handleRemoveItem(item.productId, item.quantity)
+                      handleRemoveItem(
+                        item.productId,
+                        item.quantity,
+                        "del" + item.productId
+                      )
                     }
                   >
                     <Delete />
