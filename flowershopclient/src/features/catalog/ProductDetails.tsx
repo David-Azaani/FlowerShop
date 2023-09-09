@@ -17,9 +17,10 @@ import NotFound from "../../app/errors/NotFound";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useStoreContext } from "../../app/context/StoreContext";
 import { LoadingButton } from "@mui/lab";
+import { toast } from "react-toastify";
 
 export default function ProductDetails() {
-  const { basket } = useStoreContext();
+  const { basket, setBasket, removeItem } = useStoreContext();
   const { id } = useParams<{ id: string }>();
   const [product, setProducts] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,7 +35,32 @@ export default function ProductDetails() {
         .then((res) => setProducts(res)) // if the operation has got a successful result
         .catch((error) => console.log(error)) // => error.response => error > bucause of our axios interceptor setting otherwise : error.response
         .finally(() => setLoading(false));
-  }, [id,item]);
+  }, [id, item]);
+
+  function handleQuantityChange(event: any) {
+    //if (event.target.value === undefined || "NAN") return;
+    if (event.target.value >= 0) setQuantity(parseInt(event.target.value));
+  }
+  function handleUpdateCart() {
+    setSubmitting(true);
+
+    if (!item || quantity > item.quantity) {
+      const updatedQuantity = item ? quantity - item.quantity : quantity;
+      agent.Basket.addItem(product?.id!, updatedQuantity)
+        .then((basket) => setBasket(basket))
+        .then(() => toast.success(`${updatedQuantity} item(s) added!`))
+        .catch((error) => console.log(error))
+        .finally(() => setSubmitting(false));
+    } else {
+      const updatedQuantity = item.quantity - quantity;
+      agent.Basket.deleteItem(product?.id!, updatedQuantity)
+        .then(() => removeItem(product?.id!, updatedQuantity))
+        .then(() => toast.success(`${updatedQuantity} item(s) removed!`))
+        .catch((error) => console.log(error))
+        .finally(() => setSubmitting(false));
+    }
+  }
+
   //#region old
   // useEffect(() => {
   //   axios
@@ -100,15 +126,20 @@ export default function ProductDetails() {
               label="Quantity in cart"
               fullWidth
               value={quantity}
+              onChange={handleQuantityChange}
             />
           </Grid>
           <Grid item xs={6}>
             <LoadingButton
+              disabled={
+                item?.quantity === quantity || (!item && quantity === 0)
+              }
               sx={{ height: "55px" }}
               color="primary"
               variant="contained"
               size="large"
               fullWidth
+              onClick={handleUpdateCart}
             >
               {item ? "Update Quantity" : "Add to Cart"}
             </LoadingButton>
