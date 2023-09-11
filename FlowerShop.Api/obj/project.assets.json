@@ -1730,11 +1730,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\Projects\\FlowerShop\\FlowerShop\\FlowerShop.Api\\FlowerShop.Api.csproj",
+      "projectUniqueName": "G:\\New folder\\FlowerShop\\FlowerShop\\FlowerShop\\FlowerShop.Api\\FlowerShop.Api.csproj",
       "projectName": "FlowerShop.Api",
-      "projectPath": "d:\\Projects\\FlowerShop\\FlowerShop\\FlowerShop.Api\\FlowerShop.Api.csproj",
+      "projectPath": "G:\\New folder\\FlowerShop\\FlowerShop\\FlowerShop\\FlowerShop.Api\\FlowerShop.Api.csproj",
       "packagesPath": "C:\\Users\\D\\.nuget\\packages\\",
-      "outputPath": "d:\\Projects\\FlowerShop\\FlowerShop\\FlowerShop.Api\\obj\\",
+      "outputPath": "G:\\New folder\\FlowerShop\\FlowerShop\\FlowerShop\\FlowerShop.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
