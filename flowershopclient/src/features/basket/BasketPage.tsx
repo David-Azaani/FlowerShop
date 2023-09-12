@@ -22,9 +22,14 @@ import agent from "../../app/api/agent";
 import { LoadingButton } from "@mui/lab";
 import BasketSummary from "./BasketSummary";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/stroe/configureStore";
+import { useDispatch } from "react-redux";
+import { removeItem, setBasket } from "./basketSlice";
 
 export default function BasketPage() {
-  const { basket, removeItem, setBasket } = useStoreContext();
+  //const { basket, removeItem, setBasket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
+  const dispatch = useDispatch();
   const [status, setStaus] = useState({
     loading: false,
     name: "",
@@ -33,7 +38,7 @@ export default function BasketPage() {
   function handleAddItem(productId: number, name: string) {
     setStaus({ loading: true, name }); // as name of the thing is the name of the property
     agent.Basket.addItem(productId)
-      .then((basket) => setBasket(basket))
+      .then((basket) => dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setStaus({ loading: false, name: "" }));
   }
@@ -44,7 +49,7 @@ export default function BasketPage() {
   ) {
     setStaus({ loading: true, name });
     agent.Basket.deleteItem(productId, quantity)
-      .then(() => removeItem(productId, quantity))
+      .then(() => dispatch(removeItem({ productId, quantity })))
       .catch((error) => console.log(error))
       .finally(() => setStaus({ loading: false, name: "" }));
   }
@@ -58,9 +63,9 @@ export default function BasketPage() {
   //     .catch((error) => console.log(error))
   //     .finally(() => setLoading(false));
   // }, []);
-  // // [] means useeffect would runs once! not more!
-  // //  [id] means useeffect would runs once! or when is changed!
-  // // after each component page  we have to add it to route component
+  // [] means useeffect would runs once! not more!
+  //  [id] means useeffect would runs once! or when is changed!
+  // after each component page  we have to add it to route component
 
   // if (loading)
   //   return <LoadingComponent loadingMessage="Loading basket ! wait ..." />;

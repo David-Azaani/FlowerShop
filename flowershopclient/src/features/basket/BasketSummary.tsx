@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import { useStoreContext } from "../../app/context/StoreContext";
 import { currancyFormat } from "../../app/util/util";
+import { useAppSelector } from "../../app/stroe/configureStore";
 
 export default function BasketSummary() {
-  const { basket } = useStoreContext();
+  //const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
 
   const subtotal =
     basket?.items.reduce((sum, item) => sum + item.price * item.quantity, 0) ??
@@ -51,3 +53,4 @@ export default function BasketSummary() {
     </>
   );
 }
+

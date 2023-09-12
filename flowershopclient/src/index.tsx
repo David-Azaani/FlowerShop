@@ -21,12 +21,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     {/* <App/> */}
-    <StoreProvider>
+    {/* <StoreProvider> */}
       {/* 6 */}
       <Provider store={store}>
         <RouterProvider router={router} />
       </Provider>
-    </StoreProvider>
+    {/* </StoreProvider> */}
   </React.StrictMode>
 );
 

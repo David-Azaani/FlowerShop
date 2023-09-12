@@ -18,9 +18,13 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useStoreContext } from "../../app/context/StoreContext";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../app/stroe/configureStore";
+import { removeItem, setBasket } from "../basket/basketSlice";
 
 export default function ProductDetails() {
-  const { basket, setBasket, removeItem } = useStoreContext();
+  //const { basket, setBasket, removeItem } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
+  const disptach = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [product, setProducts] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,14 +51,18 @@ export default function ProductDetails() {
     if (!item || quantity > item.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
       agent.Basket.addItem(product?.id!, updatedQuantity)
-        .then((basket) => setBasket(basket))
+        .then((basket) => disptach(setBasket(basket)))
         .then(() => toast.success(`${updatedQuantity} item(s) added!`))
         .catch((error) => console.log(error))
         .finally(() => setSubmitting(false));
     } else {
       const updatedQuantity = item.quantity - quantity;
       agent.Basket.deleteItem(product?.id!, updatedQuantity)
-        .then(() => removeItem(product?.id!, updatedQuantity))
+        .then(() =>
+          disptach(
+            removeItem({ productId: product?.id, quantity: updatedQuantity })
+          )
+        )
         .then(() => toast.success(`${updatedQuantity} item(s) removed!`))
         .catch((error) => console.log(error))
         .finally(() => setSubmitting(false));
