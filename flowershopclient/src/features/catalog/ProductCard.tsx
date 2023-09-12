@@ -15,24 +15,26 @@ import agent from "../../app/api/agent";
 import { LoadingButton } from "@mui/lab";
 import { useStoreContext } from "../../app/context/StoreContext";
 import { currancyFormat } from "../../app/util/util";
-import { useAppDispatch } from "../../app/stroe/configureStore";
-import { setBasket } from "../basket/basketSlice";
+import { useAppDispatch, useAppSelector } from "../../app/stroe/configureStore";
+import { addBasketItemAsync, setBasket } from "../basket/basketSlice";
 
 interface Props {
   product: Product;
 }
 export default function ProductCard({ product }: Props) {
-  const [loading, setLoading] = useState(false);
-  //const { setBasket } = useStoreContext();
-  const dispatch = useAppDispatch();
+  const { status, loading } = useAppSelector((state) => state.basket);
+  const distpatch = useAppDispatch();
 
-  function handleAddItem(productId: number) {
-    setLoading(true);
-    agent.Basket.addItem(productId)
-      .then(basket => dispatch(setBasket(basket)))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
-  }
+  //const [loading, setLoading] = useState(false);
+  //const { setBasket } = useStoreContext();
+
+  // function handleAddItem(productId: number) {
+  //   setLoading(true);
+  //   agent.Basket.addItem(productId)
+  //     .then((basket) => dispatch(setBasket(basket)))
+  //     .catch((error) => console.log(error))
+  //     .finally(() => setLoading(false));
+  // }
 
   return (
     <Card>
@@ -66,8 +68,12 @@ export default function ProductCard({ product }: Props) {
       </CardContent>
       <CardActions>
         <LoadingButton // need to npm install @mui/lab
-          loading={loading}
-          onClick={() => handleAddItem(product.id)}
+          //  loading={loading}
+          loading={status.includes("pendingAddItem" + product.id)}
+          //onClick={() => handleAddItem(product.id)}
+          onClick={() =>
+            distpatch(addBasketItemAsync({ productId: product.id }))
+          }
           size="small"
         >
           Add To Card
