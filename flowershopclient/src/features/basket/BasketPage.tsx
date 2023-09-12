@@ -22,37 +22,43 @@ import agent from "../../app/api/agent";
 import { LoadingButton } from "@mui/lab";
 import BasketSummary from "./BasketSummary";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/stroe/configureStore";
+import { useAppDispatch, useAppSelector } from "../../app/stroe/configureStore";
 import { useDispatch } from "react-redux";
-import { removeItem, setBasket } from "./basketSlice";
+// import { removeItem, setBasket } from "./basketSlice";
+import {
+  addBasketItemAsync,
+  removeBasketItemAsync,
+  setBasket,
+} from "./basketSlice";
 
 export default function BasketPage() {
   //const { basket, removeItem, setBasket } = useStoreContext();
-  const { basket } = useAppSelector((state) => state.basket);
-  const dispatch = useDispatch();
-  const [status, setStaus] = useState({
-    loading: false,
-    name: "",
-  });
+  const { basket, status } = useAppSelector((state) => state.basket);
+  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  // const [status, setStaus] = useState({
+  //   loading: false,
+  //   name: "",
+  // });
 
-  function handleAddItem(productId: number, name: string) {
-    setStaus({ loading: true, name }); // as name of the thing is the name of the property
-    agent.Basket.addItem(productId)
-      .then((basket) => dispatch(setBasket(basket)))
-      .catch((error) => console.log(error))
-      .finally(() => setStaus({ loading: false, name: "" }));
-  }
-  function handleRemoveItem(
-    productId: number,
-    quantity: number = 1,
-    name: string
-  ) {
-    setStaus({ loading: true, name });
-    agent.Basket.deleteItem(productId, quantity)
-      .then(() => dispatch(removeItem({ productId, quantity })))
-      .catch((error) => console.log(error))
-      .finally(() => setStaus({ loading: false, name: "" }));
-  }
+  // function handleAddItem(productId: number, name: string) {
+  //   setStaus({ loading: true, name }); // as name of the thing is the name of the property
+  //   agent.Basket.addItem(productId)
+  //     .then((basket) => dispatch(setBasket(basket)))
+  //     .catch((error) => console.log(error))
+  //     .finally(() => setStaus({ loading: false, name: "" }));
+  // }
+  // function handleRemoveItem(
+  //   productId: number,
+  //   quantity: number = 1,
+  //   name: string
+  // ) {
+  //   setStaus({ loading: true, name });
+  //   agent.Basket.deleteItem(productId, quantity)
+  //     .then(() => dispatch(removeItem({ productId, quantity })))
+  //     .catch((error) => console.log(error))
+  //     .finally(() => setStaus({ loading: false, name: "" }));
+  // }
   //#region  // these code were commented after useing store provide because we loaded the basket at initilizztion app and we dont need this anymore!
   // const [loading, setLoading] = useState(true);
   // const [basket, setBasket] = useState<Basket | null>(null);
@@ -109,14 +115,23 @@ export default function BasketPage() {
                 <TableCell align="center">
                   <LoadingButton
                     loading={
-                      status.loading && status.name == "rem" + item.productId
+                      status === "pendingRemoveItem" + item.productId + "rem"
+                      // status.loading && status.name == "rem" + item.productId
                     }
                     color="error"
                     onClick={() =>
-                      handleRemoveItem(
-                        item.productId,
-                        1,
-                        "rem" + item.productId
+                      // handleRemoveItem(
+                      //   item.productId,
+                      //   1,
+                      //   "rem" + item.productId
+                      // )
+
+                      dispatch(
+                        removeBasketItemAsync({
+                          productId: item.productId,
+                          quantity: 1, // important note : if we set a param as a nullable and set the default val for it we'll might get into trubell!
+                          name :"rem"
+                        })
                       )
                     }
                   >
@@ -125,11 +140,16 @@ export default function BasketPage() {
                   {item.quantity}
                   <LoadingButton
                     loading={
-                      status.loading && status.name == "add" + item.productId
+                      // status.loading && status.name == "add" + item.productId
+                      status === "pendingAddItem" + item.productId
                     }
                     color="secondary"
-                    onClick={() =>
-                      handleAddItem(item.productId, "add" + item.productId)
+                    onClick={
+                      () =>
+                        dispatch(
+                          addBasketItemAsync({ productId: item.productId })
+                        )
+                      // handleAddItem(item.productId, "add" + item.productId)
                     }
                   >
                     <Add />
@@ -141,14 +161,22 @@ export default function BasketPage() {
                 <TableCell align="right">
                   <LoadingButton
                     loading={
-                      status.loading && status.name == "del" + item.productId
+                      // status.loading && status.name == "del" + item.productId
+                      status === "pendingRemoveItem" + item.productId + 'del'
                     }
                     color="error"
                     onClick={() =>
-                      handleRemoveItem(
-                        item.productId,
-                        item.quantity,
-                        "del" + item.productId
+                      // handleRemoveItem(
+                      //   item.productId,
+                      //   item.quantity,
+                      //   "del" + item.productId
+                      // )
+                      dispatch(
+                        removeBasketItemAsync({
+                          productId: item.productId,
+                          quantity: item.quantity,
+                          name: "del",
+                        })
                       )
                     }
                   >

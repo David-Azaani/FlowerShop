@@ -19,17 +19,22 @@ import { useStoreContext } from "../../app/context/StoreContext";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../app/stroe/configureStore";
-import { removeItem, setBasket } from "../basket/basketSlice";
+//import { removeItem, setBasket } from "../basket/basketSlice";
+import {
+  addBasketItemAsync,
+  removeBasketItemAsync,
+  setBasket,
+} from "../basket/basketSlice";
 
 export default function ProductDetails() {
   //const { basket, setBasket, removeItem } = useStoreContext();
-  const { basket } = useAppSelector((state) => state.basket);
+  const { basket, status } = useAppSelector((state) => state.basket);
   const disptach = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [product, setProducts] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [quantity, setQuantity] = useState(0);
-  const [submitting, setSubmitting] = useState(false);
+  // const [submitting, setSubmitting] = useState(false);
   const item = basket?.items.find((p) => p.productId == product?.id);
 
   useEffect(() => {
@@ -46,26 +51,39 @@ export default function ProductDetails() {
     if (event.target.value >= 0) setQuantity(parseInt(event.target.value));
   }
   function handleUpdateCart() {
-    setSubmitting(true);
+    // setSubmitting(true);
 
     if (!item || quantity > item.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
-      agent.Basket.addItem(product?.id!, updatedQuantity)
-        .then((basket) => disptach(setBasket(basket)))
-        .then(() => toast.success(`${updatedQuantity} item(s) added!`))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false));
+      // agent.Basket.addItem(product?.id!, updatedQuantity)
+      //   .then((basket) => disptach(setBasket(basket)))
+      //   .then(() => toast.success(`${updatedQuantity} item(s) added!`))
+      //   .catch((error) => console.log(error))
+      //   .finally(() => setSubmitting(false));
+      disptach(
+        addBasketItemAsync({
+          productId: product?.id!, // (!) likewise the other previous one!
+          quantity: updatedQuantity,
+        })
+      );
     } else {
       const updatedQuantity = item.quantity - quantity;
-      agent.Basket.deleteItem(product?.id!, updatedQuantity)
-        .then(() =>
-          disptach(
-            removeItem({ productId: product?.id, quantity: updatedQuantity })
-          )
-        )
+      // agent.Basket.deleteItem(product?.id!, updatedQuantity)
+      //   .then(() =>
+      //      disptach(
+      //       removeItem({ productId: product?.id, quantity: updatedQuantity })
+
+      //     )
+      //   )
+      disptach(
+        removeBasketItemAsync({
+          productId: product?.id!,
+          quantity: updatedQuantity,
+        })
+      )
         .then(() => toast.success(`${updatedQuantity} item(s) removed!`))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false));
+        .catch((error) => console.log(error));
+      //  .finally(() => setSubmitting(false));
     }
   }
 
@@ -142,6 +160,8 @@ export default function ProductDetails() {
               disabled={
                 item?.quantity === quantity || (!item && quantity === 0)
               }
+              // loading={submitting}
+              loading={status.includes("pendnig" + item?.productId)}
               sx={{ height: "55px" }}
               color="primary"
               variant="contained"
