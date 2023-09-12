@@ -16,6 +16,9 @@ export const store = configureStore({
   },
 });
 
+
+
+//7 own hook!
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
