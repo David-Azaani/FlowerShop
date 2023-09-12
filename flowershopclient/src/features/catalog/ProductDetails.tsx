@@ -176,7 +176,7 @@ export default function ProductDetails() {
                 item?.quantity === quantity || (!item && quantity === 0)
               }
               // loading={submitting}
-              loading={status.includes("pendnig" + item?.productId)}
+              loading={status.includes("pending")}
               sx={{ height: "55px" }}
               color="primary"
               variant="contained"
