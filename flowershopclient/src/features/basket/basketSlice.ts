@@ -22,11 +22,12 @@ export const addBasketItemAsync = createAsyncThunk<
 >(
   "basket/addBasketItemAsync",
 
-  async ({ productId, quantity = 1 }) => {
+  async ({ productId, quantity = 1 }, thunkAPI) => {
     try {
       return await agent.Basket.addItem(productId, quantity);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      // console.log(error);
+      return thunkAPI.rejectWithValue({ error: error.data });
     }
   }
 );
@@ -34,12 +35,13 @@ export const addBasketItemAsync = createAsyncThunk<
 export const removeBasketItemAsync = createAsyncThunk<
   void,
   { productId: number; quantity: number; name?: string }
->("basket/removeBasketItemAsync", async ({ productId, quantity }) => {
+>("basket/removeBasketItemAsync", async ({ productId, quantity }, thunkAPI) => {
   // as we dont need name in logic we dont use it here
   try {
     await agent.Basket.deleteItem(productId, quantity);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    // console.log(error);
+    return thunkAPI.rejectWithValue({ error: error.data });
   }
 });
 
@@ -76,14 +78,14 @@ export const basketSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(addBasketItemAsync.fulfilled, (state, action) => {
-      toast.success("Item added!");
+      //toast.success("Item added!");
       console.log(action);
       state.status = "idle";
       state.basket = action.payload; // payload are basket because we specifed at first => linb 18
       state.loading = false;
     });
     builder.addCase(addBasketItemAsync.rejected, (state, action) => {
-      console.log(action);
+      console.log(action.payload);
       state.status = "idle";
       state.loading = false;
     });
@@ -107,13 +109,13 @@ export const basketSlice = createSlice({
       )
         state.basket.items.splice(itemIndex, 1);
 
-      toast.success("Item removed!");
-      console.log(action);
+      //  toast.success("Item removed!");
+      console.log(action.payload);
       state.status = "idle";
       state.loading = true;
     });
     builder.addCase(removeBasketItemAsync.rejected, (state, action) => {
-      toast.error("Error occured");
+      // toast.error("Error occured");
       console.log(action);
       state.status = "idle";
       state.loading = true;
