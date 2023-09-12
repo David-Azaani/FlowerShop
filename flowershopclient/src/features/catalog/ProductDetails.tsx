@@ -25,26 +25,38 @@ import {
   removeBasketItemAsync,
   setBasket,
 } from "../basket/basketSlice";
+import { stat } from "fs";
+import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 export default function ProductDetails() {
   //const { basket, setBasket, removeItem } = useStoreContext();
   const { basket, status } = useAppSelector((state) => state.basket);
+  const { status: productStatus } = useAppSelector((state) => state.catalog);
   const disptach = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const [product, setProducts] = useState<Product | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  //const [product, setProducts] = useState<Product | null>(null);
+  const product = useAppSelector((state) =>
+    productSelectors.selectById(state, id!)
+  );
+  // const [loading, setLoading] = useState<boolean>(true);
   const [quantity, setQuantity] = useState(0);
   // const [submitting, setSubmitting] = useState(false);
   const item = basket?.items.find((p) => p.productId == product?.id);
 
   useEffect(() => {
     if (item) setQuantity(item.quantity);
-    id && // if id is existed
-      agent.Catalog.details(parseInt(id))
-        .then((res) => setProducts(res)) // if the operation has got a successful result
-        .catch((error) => console.log(error)) // => error.response => error > bucause of our axios interceptor setting otherwise : error.response
-        .finally(() => setLoading(false));
-  }, [id, item]);
+    if (!product) disptach(fetchProductAsync(parseInt(id!)));
+    //if (!product && id) disptach(fetchProductAsync(parseInt(id)));
+  }, [id, item, disptach, product]);
+
+  // useEffect(() => {
+  //   if (item) setQuantity(item.quantity);
+  //   id && // if id is existed
+  //     agent.Catalog.details(parseInt(id))
+  //       .then((res) => setProducts(res)) // if the operation has got a successful result
+  //       .catch((error) => console.log(error)) // => error.response => error > bucause of our axios interceptor setting otherwise : error.response
+  //       .finally(() => setLoading(false));
+  // }, [id, item]);
 
   function handleQuantityChange(event: any) {
     //if (event.target.value === undefined || "NAN") return;
@@ -98,8 +110,11 @@ export default function ProductDetails() {
   //#endregion
 
   // if (loading) return <h3>Loading ... </h3>;
-  if (loading)
+  // if (loading)
+  //   return <LoadingComponent loadingMessage="Loading Details ... Wait!" />;
+  if (productStatus.includes("pending"))
     return <LoadingComponent loadingMessage="Loading Details ... Wait!" />;
+
   // if (!product) return <h3>Not Found ... </h3>;
   if (!product) return <NotFound />;
 
