@@ -12,20 +12,24 @@ import { StoreProvider } from "./app/context/StoreContext";
 
 import { Provider } from "react-redux";
 import { store } from "./app/stroe/configureStore";
+import { fetchProductsAsync } from "./features/catalog/catalogSlice";
 // const store = configureStore();
 // console.log(store.getState());
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+store.dispatch(fetchProductsAsync());
+
 root.render(
   <React.StrictMode>
     {/* <App/> */}
     {/* <StoreProvider> */}
-      {/* 6 */}
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+    {/* 6 */}
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
     {/* </StoreProvider> */}
   </React.StrictMode>
 );
