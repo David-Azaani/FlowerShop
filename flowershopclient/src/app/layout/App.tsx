@@ -78,4 +78,4 @@ function App() {
 
 export default App;
 
-// Note : for learning more i did note remove unusead imports and comments on purpose!!
+// Note : for learning more i did note remove unused imports and comments on purpose!!
