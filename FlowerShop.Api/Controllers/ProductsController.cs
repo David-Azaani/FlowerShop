@@ -1,7 +1,9 @@
 using FlowerShop.Api.Data;
 using FlowerShop.Api.Entities;
+using FlowerShop.Api.Extentions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace FlowerShop.Api.Controllers;
 
@@ -18,12 +20,28 @@ public class ProductsController : BaseApiController
 
     }
 
-    [HttpGet]
-    public async Task<ActionResult<List<Product>>> GetProducts()
+    [HttpGet] // when we dont pass our param here << it means we have to use it as query string and that's what we need!
+    public async Task<ActionResult<List<Product>>> GetProducts(string orderBy)
     {
         _logger.LogInformation("GetProducts was Invoked!");
-        var res = await _dataContext.Products.ToListAsync();
-        return Ok(res);
+        // var res = await _dataContext.Products.ToListAsync();
+        var query = _dataContext
+        .Products
+        .Sort(orderBy)
+        .AsQueryable();
+        // this code  is not exceuted untile to list!
+
+
+        // we have to use repository pattern to put  database logic outsite of controller!!+
+        // one another was is using wxtention method ! usful for DRY
+        // query = orderBy switch
+        // {
+        //     "price" => query.OrderBy(p => p.Price),
+        //     "priceDesc" => query.OrderByDescending(p => p.Price),
+        //     _ => query.OrderBy(p => p.Name)   // _ means default!
+
+        // };
+        return Ok(await query.ToListAsync());
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> Get(int id)
