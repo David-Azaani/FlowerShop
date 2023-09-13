@@ -21,13 +21,14 @@ public class ProductsController : BaseApiController
     }
 
     [HttpGet] // when we dont pass our param here << it means we have to use it as query string and that's what we need!
-    public async Task<ActionResult<List<Product>>> GetProducts(string orderBy)
+    public async Task<ActionResult<List<Product>>> GetProducts(string orderBy, string serachTerm)
     {
         _logger.LogInformation("GetProducts was Invoked!");
         // var res = await _dataContext.Products.ToListAsync();
         var query = _dataContext
         .Products
         .Sort(orderBy)
+        .Search(serachTerm)
         .AsQueryable();
         // this code  is not exceuted untile to list!
 
