@@ -21,9 +21,9 @@ const root = ReactDOM.createRoot(
 );
 
 // store.dispatch(fetchProductsAsync());
-
+// React.StrictMode
 root.render(
-  <React.StrictMode>
+  <>
     {/* <App/> */}
     {/* <StoreProvider> */}
     {/* 6 */}
@@ -31,7 +31,7 @@ root.render(
       <RouterProvider router={router} />
     </Provider>
     {/* </StoreProvider> */}
-  </React.StrictMode>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

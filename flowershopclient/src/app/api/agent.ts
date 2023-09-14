@@ -87,6 +87,7 @@ const Basket = {
 const Catalog = {
   list: () => requests.get("products"), //list: () => requests.get("buggy/server-error"), for test erros
   details: (id: number) => requests.get(`products/${id}`),
+  fetchFilters: () => requests.get("Products/filters"),
 };
 
 const agent = {
