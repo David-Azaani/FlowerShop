@@ -62,7 +62,7 @@ axios.interceptors.response.use(
 );
 
 const requests = {
-  get: (url: string) => axios.get(url).then(resposeBody),
+  get: (url: string,params?:URLSearchParams) => axios.get(url,{params}).then(resposeBody), //params?:URLSearchParams instead of querystring for pagination and more we can use this 
   post: (url: string, body: {}) => axios.post(url, body).then(resposeBody),
   put: (url: string, body: {}) => axios.put(url, body).then(resposeBody),
   delete: (url: string) => axios.delete(url).then(resposeBody),
@@ -85,7 +85,7 @@ const Basket = {
 };
 
 const Catalog = {
-  list: () => requests.get("products"), //list: () => requests.get("buggy/server-error"), for test erros
+  list: (params :URLSearchParams) => requests.get("products",params), //list: () => requests.get("buggy/server-error"), for test erros
   details: (id: number) => requests.get(`products/${id}`),
   fetchFilters: () => requests.get("Products/filters"),
 };
