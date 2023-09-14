@@ -24,6 +24,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import ProductSearch from "./ProductSearch";
 
 // interface Props {
 //   products: Product[];
@@ -90,7 +91,7 @@ export default function Catalog() {
     <Grid container spacing={4}>
       <Grid item xs={3}>
         <Paper sx={{ mb: 2 }}>
-          <TextField label="Search products" variant="outlined" fullWidth />
+          <ProductSearch />
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
           <FormControl>
@@ -134,7 +135,7 @@ export default function Catalog() {
       </Grid>
       <Grid item xs={3} />
       <Grid item xs={9} />
-      
+
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography color="initial">Diplay 1-6 ...... </Typography>
         <Pagination color="secondary" size="large" count={10} page={2} />

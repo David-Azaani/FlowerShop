@@ -31,7 +31,7 @@ public class ProductsController : BaseApiController
         var query = _dataContext
         .Products
         .Sort(productParams.OrderBy)
-        .Search(productParams.SerachTerm)
+        .Search(productParams.SearchTerm)
         .Filter(productParams.Brands, productParams.Types)
         .AsQueryable();
         // this code  is not exceuted untile to list!
