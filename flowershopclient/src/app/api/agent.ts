@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { router } from "../router/Routes";
+import { PaginatanedResponse } from "../models/pagination";
 
 // Making intetional Delay to test serverDelay
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
@@ -20,8 +21,17 @@ const resposeBody = (response: AxiosResponse) => response.data;
 //#endregion
 
 axios.interceptors.response.use(
+  // every we get back from api is here!
+  //our reponse includes our header!
   async (response) => {
     await sleep();
+    const pagination = response.headers["pagination"]; // in axios we have to write lowercase regardless of everything in axios wehave to follow this
+    // for sure see colsole.log(response).
+    if (pagination) {
+      response.data = new PaginatanedResponse(response.data,JSON.parse(pagination));
+     // console.log(response);
+      return response;
+    }
 
     return response;
   },
