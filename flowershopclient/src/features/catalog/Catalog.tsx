@@ -8,6 +8,7 @@ import {
   fetchFilters,
   fetchProductsAsync,
   productSelectors,
+  setProductParams,
 } from "./catalogSlice";
 import {
   Box,
@@ -25,6 +26,9 @@ import {
   Typography,
 } from "@mui/material";
 import ProductSearch from "./ProductSearch";
+import RadioButtonGroup from "../../app/components/RadioButtonGroup";
+import CheckBoxGroup from "../../app/components/CheckButtonGroup";
+import CheckButtonGroup from "../../app/components/CheckButtonGroup";
 
 // interface Props {
 //   products: Product[];
@@ -41,8 +45,14 @@ export default function Catalog() {
   // const [products, setProducts] = useState<Product[]>([]);
   const products = useAppSelector(productSelectors.selectAll);
   const dispatch = useAppDispatch();
-  const { productsLoaded, status, filtersLoaded, brands, types } =
-    useAppSelector((state) => state.catalog);
+  const {
+    productsLoaded,
+    status,
+    filtersLoaded,
+    brands,
+    types,
+    productParams,
+  } = useAppSelector((state) => state.catalog);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -94,32 +104,33 @@ export default function Catalog() {
           <ProductSearch />
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
-          <FormControl>
-            <RadioGroup>
-              {sortOptions.map(({ value, label }) => (
-                <FormControlLabel
-                  value={value}
-                  control={<Radio />}
-                  label={label}
-                  key={value}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <RadioButtonGroup
+            selectedValue={productParams.orderBy}
+            options={sortOptions}
+            onChange={(e) =>
+              dispatch(setProductParams({ orderBy: e.target.value }))
+            }
+          ></RadioButtonGroup>
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
-          <FormGroup>
-            {brands.map((brand) => (
-              <FormControlLabel
-                control={<Checkbox />}
-                label={brand}
-                key={brand}
-              />
-            ))}
-          </FormGroup>
+          <CheckButtonGroup
+            items={brands}
+            onChange={(items: string[]) =>
+              dispatch(setProductParams({ brands: items }))
+            }
+            checked={productParams.brands}
+          ></CheckButtonGroup>
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
-          <FormGroup>
+          <CheckButtonGroup
+            items={types}
+            onChange={(items: string[]) =>
+              dispatch(setProductParams({ types: items }))
+            }
+            checked={productParams.types}
+          ></CheckButtonGroup>
+
+          {/* <FormGroup>
             {types.map((type) => (
               <FormControlLabel
                 control={<Checkbox />}
@@ -127,7 +138,7 @@ export default function Catalog() {
                 key={type}
               />
             ))}
-          </FormGroup>
+          </FormGroup> */}
         </Paper>
       </Grid>
       <Grid item xs={9}>
